@@ -1,0 +1,88 @@
+{
+  "templateId": "d24a75c4c0ea",
+  "templateName": "template_test_01",
+  "scopeName": "scope_01",
+  "type": "monitor",
+  "serviceName": "service_01",
+  "status": "new",
+  "plugins": [
+    {
+      "pluginName": "server_test",
+      "instance": false,
+      "id": 0,
+      "metrics": [
+        "cpu"
+      ],
+      "runtime": "{\"cpu\":\"max\"}"
+    },
+    {
+      "pluginName": "file_monitor",
+      "instance": true,
+      "id": 22,
+      "metrics": [
+        "size",
+        "count"
+      ],
+      "runtime": "{\"_file_path\":\"/etc/hosts/host\"}"
+    }
+  ],
+  "alerts": [
+    {
+      "pluginName": "server_test",
+      "metricName": "cpu",
+      "metricUnit": "m",
+      "lowerLimitValue": "{\"_file_path\":\"/etc/hosts/host\"}",
+      "alertConfig": {
+        "lowerLimitValue": "30",
+        "upperLimitValue": "40",
+        "logic": "in",
+        "expr": null,
+        "timeUnit": "m",
+        "level": "notice",
+        "alertName": "mem is over {$limit}",
+        "status": null,
+        "startTime": null,
+        "endTime": null,
+        "duration": 60
+      }
+    },
+    {
+      "pluginName": "file_monitor",
+      "metricName": "exit",
+      "metricUnit": "m",
+      "lowerLimitValue": "{\"_file_path\":\"/etc/hosts/host\"}",
+      "alertConfig": {
+        "lowerLimitValue": "0",
+        "upperLimitValue": "0",
+        "logic": "in",
+        "expr": null,
+        "timeUnit": "m",
+        "level": "notice",
+        "alertName": "${file} is not exit",
+        "status": null,
+        "startTime": null,
+        "endTime": null,
+        "duration": 60
+      }
+    },
+    {
+      "pluginName": "file_monitor",
+      "metricName": "size",
+      "metricUnit": "m",
+      "lowerLimitValue": "{\"_file_path\":\"/etc/hosts/host\"}",
+      "alertConfig": {
+        "lowerLimitValue": "30",
+        "upperLimitValue": "40",
+        "logic": "in",
+        "expr": null,
+        "timeUnit": "m",
+        "level": "major",
+        "alertName": "${file} size too large",
+        "status": null,
+        "startTime": null,
+        "endTime": null,
+        "duration": 60
+      }
+    }
+  ]
+}

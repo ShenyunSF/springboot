@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="helloworld" class="com.example.demo.springevenshandler.HelloWorld">
+        <property name="message" value="helloworld"></property>
+    </bean>
+
+    <bean id="cStartEventHandler" class="com.example.demo.springevenshandler.CStartEventHandler"/>
+    <bean id="CStopEventHandler" class="com.example.demo.springevenshandler.CStopEventHandler"/>
+
+</beans>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--导入属性配置-->
+    <properties resource="mysql.properties"></properties><!--导入链接数据库的参数和驱动-->
+    <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
+    <classPathEntry
+            location="D:\IT\env\maven-respository\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
+    <context id="mysql" defaultModelType="hierarchical" targetRuntime="MyBatis3Simple">
+        <!--自动识别数据库关键字，默认false，如果设置为true，根据SqlServedWords中定义的关键字列表；一般保留默认值，遇到数据库关键字(JAVA关键字)，使用ColumnOverride 覆盖。-->
+        <property name="autoDelimitKeywords" value="false"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <!--  beginningDelimiter和endingDelimiter ：指明数据库的用于标记数据库对象名的符号，MYSQL默认是反引号           -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/test_db?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8"
+                        userId="test" password="test123">
+        </jdbcConnection>
+        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+        <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- 生成模型的包名和位置-->
+        <javaModelGenerator targetPackage="com.example.demo.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+           <!-- <property name="constructorBased" value="true"/>
+            <property name="immutable" value="true"/>-->
+            <!--<property name="rootClass" value="com._520it.mybatis.domain.BaseDomain"/>-->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- 生成映射文件的包名和位置-->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- 生成DAO的包名和位置 XMLMAPPER,ANNOTATEDMAPPER ,MIXEDMAPPER-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.demo.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+        <table tableName="user" domainObjectName="User" enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="false"/>
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,47 @@
+server:
+  port: 38194
+  session-timeout: 30
+
+spring:
+  application.name: testDemo
+  thymeleaf:
+    mode: html
+    cache: false
+#quartz:
+#  #相关属性配置
+#  properties:
+#    org:
+#      quartz:
+#        scheduler:
+#          instanceName: quartzSchedule
+#          instanceId: AUTO
+#        jobStore:
+#          class: org.quartz.impl.jdbcjobstore.JobStoreTX
+#          driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+#          tablePrefix: QRTZ_
+#          isClustered: false
+#          clusterCheckinInterval: 10000
+#          useProperties: false
+#        threadPool:
+#          class: org.quartz.simpl.SimpleThreadPool
+#          threadCount: 10
+#          threadPriority: 5
+#          threadsInheritContextClassLoaderOfInitializingThread: true
+#    #数据库方式
+#    job-store-type: JDBC
+#    #初始化表结构
+#    jdbc:
+#      initialize-schema: NEVER
+#mvc:
+#  static-path-pattern: /**
+mybatis:
+  mapper-locations: classpath:mapping/*.xml # 配置mapper路径
+  type-aliases-package: com.example.demo.model # 配置实体对象路径,这样在涉及到实体类写sql语句的时候，可以不用写包名
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+logging:
+  level:
+    com.lee.quartz.mapper: debug
