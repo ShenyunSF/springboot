@@ -79,4 +79,16 @@ public class LambdaCompatarator2
 
     }
 
+    public interface  test{
+        public static void test1(){
+            System.out.println("test1");
+        }
+        default void test2(){
+            System.out.println("test2");
+        }
+    }
+    public interface test1 extends  test{
+
+    }
+
 }
