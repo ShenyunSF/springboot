@@ -1,12 +1,14 @@
 server:
   port: 38194
   session-timeout: 30
-
 spring:
   application.name: testDemo
   thymeleaf:
     mode: html
     cache: false
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
 #quartz:
 #  #相关属性配置
 #  properties:
@@ -42,6 +44,7 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 30
 
+
 logging:
   level:
-    com.lee.quartz.mapper: debug
+    com.lee.quartz.mapper: info

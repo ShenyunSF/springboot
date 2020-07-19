@@ -3,6 +3,7 @@ package com.example.demo.ssh;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.sshd.client.SshClient;
+import org.apache.sshd.client.channel.ChannelExec;
 import org.apache.sshd.client.channel.ClientChannel;
 import org.apache.sshd.client.channel.ClientChannelEvent;
 import org.apache.sshd.client.future.AuthFuture;
@@ -22,9 +23,15 @@ import java.util.List;
 @Slf4j
 public class SshdExecutor
 {
+    public SshdExecutor()
+    {
+    }
+
     public SshdExecutor(String ip, Integer port, String user)
     {
-
+        this.ip   = ip;
+        this.port = port;
+        this.user = user;
     }
 
     public static void main(String[] args)
@@ -34,24 +41,45 @@ public class SshdExecutor
         sshClient.start();
         try (
                 final ClientSession
-                        session = sshClient.connect("root", "192.168.31.182", 22).verify().getSession()
+                        session = sshClient.connect("root", "192.168.31.11", 22).verify().getSession()
         )
         {
-            session.addPasswordIdentity("bazhang421");
-            //session.addPublicKeyIdentity(...key-pair...); // for password-less authentication
-            // Note: can add BOTH password AND public key identities - depends on the client/server security setup
-            final AuthFuture verify = session.auth().verify();
-            if (!verify.isSuccess())
-            {
-                System.out.println("远程连接失败");
-                ;
-            }
+            session.addPasswordIdentity("root");
+            ClientChannel         channel = session.createExecChannel(cmd);
+            ByteArrayOutputStream out     = new ByteArrayOutputStream();
+            ByteArrayOutputStream err     = new ByteArrayOutputStream();
+            channel.setOut(out);
+            channel.setErr(err);
 
+            if (!channel.open().verify(10 * 1000).isOpened())
+            {
+                throw new Exception("ls");
+            }
+            List<ClientChannelEvent> list = new ArrayList<>();
+            list.add(ClientChannelEvent.CLOSED);
+            channel.waitFor(list, 10 * 1000);
+            channel.close();
+            String result = out.toString();
+            String error  = err.toString();
+            System.out.println("result: " + result);
+            System.out.println("error: " + error);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+        finally
+        {
+            try
+            {
+                sshClient.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     SshClient client;
@@ -143,25 +171,34 @@ public class SshdExecutor
         session.addPasswordIdentity(password);
     }
 
+    public SshdExecutor(String ip, Integer port, String user, String password, String publicKey, String privateKey)
+    {
+        this.ip         = ip;
+        this.port       = port;
+        this.user       = user;
+        this.password   = password;
+        this.publicKey  = publicKey;
+        this.privateKey = privateKey;
+    }
 
     //公钥方式
-    public SshdExecutor(String ip, Integer port, String user, String keyName, String publicKey)
-    {
-        this(ip, port, user);
-        try
-        {
-            session.addPublicKeyIdentity(SecurityUtils.loadKeyPairIdentities(keyName,
-                    new ByteArrayInputStream(publicKey.getBytes()), null));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (GeneralSecurityException e)
-        {
-            e.printStackTrace();
-        }
-    }
+//    public SshdExecutor(String ip, Integer port, String user, String keyName, String publicKey)
+//    {
+//        this(ip, port, user);
+//        try
+//        {
+//            session.addPublicKeyIdentity(SecurityUtils.loadKeyPairIdentities(keyName,
+//                    new ByteArrayInputStream(publicKey.getBytes()), null));
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        catch (GeneralSecurityException e)
+//        {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     //执行命令
