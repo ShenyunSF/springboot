@@ -1,0 +1,3 @@
+@Bean 的会在@Component的beanDefination中进行实例化。所以，如果同时两个类，
+分别使用了@Bean和@Component注册了相同的名字
+为（“model”），的话，因为@Bean是后实例的，所以会把@Component的覆盖掉。会报错。
